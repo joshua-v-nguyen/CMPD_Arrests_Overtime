@@ -27,8 +27,8 @@ cmpd_data_native = cmpd_data[cmpd_data['Driver_Race']=='Native American']
 cmpd_data_other = cmpd_data[cmpd_data['Driver_Race']=='Other/Unknown']
 
 
-print('Black: ', cmpd_data_black['Driver_Race'].count())
-print('White: ', cmpd_data_white['Driver_Race'].count())
-print('Asian: ', cmpd_data_asian['Driver_Race'].count())
-print('Native American: ', cmpd_data_native['Driver_Race'].count())
-print('Other/Unknown: ', cmpd_data_other['Driver_Race'].count())
+st.text('Black: ', cmpd_data_black['Driver_Race'].count())
+st.text('White: ', cmpd_data_white['Driver_Race'].count())
+st.text('Asian: ', cmpd_data_asian['Driver_Race'].count())
+st.text('Native American: ', cmpd_data_native['Driver_Race'].count())
+st.text('Other/Unknown: ', cmpd_data_other['Driver_Race'].count())
