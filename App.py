@@ -2,6 +2,6 @@ import geopandas as gpd
 import pandas as pd
 import streamlit as st
 
-canopy_shp = gpd.read_file('Tree_Canopy-polygon.shp')
+cmpd_data = pd.read_csv('Data\Officer_Traffic_Stops.csv')
 
-canopy_shp.head()
+cmpd_data
