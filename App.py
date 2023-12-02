@@ -4,4 +4,4 @@ import streamlit as st
 
 cmpd_data = pd.read_csv('Data\Officer_Traffic_Stops.csv')
 
-cmpd_data
+st.title("Police Traffic Stops")
