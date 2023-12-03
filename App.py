@@ -19,9 +19,9 @@ def load_data(apd_data):
     return apd_data
 apd_data = load_data("<path to csv>")
 
-tab1, tab2 = st.tabs(["Charlotte, NC", "Austin, TX"])
-
 st.title("Police Traffic Stops")
+
+tab1, tab2 = st.tabs(["Charlotte, NC", "Austin, TX"])
 
 with tab1:
     #CMPD Arrests by Race from 2020
