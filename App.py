@@ -21,9 +21,9 @@ apd_data = load_data("<path to csv>")
 
 tab1, tab2 = st.tabs(["Charlotte, NC", "Austin, TX"])
 
-with tab1:
-    st.title("Police Traffic Stops")
+st.title("Police Traffic Stops")
 
+with tab1:
     #CMPD Arrests by Race from 2020
     st.subheader('CMPD Arrests by Race from 2020')
 
