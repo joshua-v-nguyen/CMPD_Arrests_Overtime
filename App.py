@@ -19,75 +19,79 @@ def load_data(apd_data):
     return apd_data
 apd_data = load_data("<path to csv>")
 
-st.title("Police Traffic Stops")
+tab1, tab2 = st.tabs(["Charlotte, NC", "Austin, TX"])
 
-#CMPD Arrests by Race from 2020
-st.subheader('CMPD Arrests by Race from 2020')
+with tab1:
+    st.title("Police Traffic Stops")
 
-#Filtering only stops that resulted in Arrest
-cmpd_data = cmpd_data[cmpd_data['Result_of_Stop']=='Arrest']
-#Filtering only 2020 data
-cmpd_data[['Year', 'Month']] = cmpd_data['Month_of_Stop'].str.split('/', expand=True)
-cmpd_data = cmpd_data[cmpd_data['Year']=='2020']
+    #CMPD Arrests by Race from 2020
+    st.subheader('CMPD Arrests by Race from 2020')
 
-cmpd_data_black = cmpd_data['Driver_Race'].value_counts()['Black']
-cmpd_data_white = cmpd_data['Driver_Race'].value_counts()['White']
-cmpd_data_asian = cmpd_data['Driver_Race'].value_counts()['Asian']
-cmpd_data_native = cmpd_data['Driver_Race'].value_counts()['Native American']
-cmpd_data_other = cmpd_data['Driver_Race'].value_counts()['Other/Unknown']
+    #Filtering only stops that resulted in Arrest
+    cmpd_data = cmpd_data[cmpd_data['Result_of_Stop']=='Arrest']
+    #Filtering only 2020 data
+    cmpd_data[['Year', 'Month']] = cmpd_data['Month_of_Stop'].str.split('/', expand=True)
+    cmpd_data = cmpd_data[cmpd_data['Year']=='2020']
 
-col1, col2, col3, col4, col5 = st.columns(5)
+    cmpd_data_black = cmpd_data['Driver_Race'].value_counts()['Black']
+    cmpd_data_white = cmpd_data['Driver_Race'].value_counts()['White']
+    cmpd_data_asian = cmpd_data['Driver_Race'].value_counts()['Asian']
+    cmpd_data_native = cmpd_data['Driver_Race'].value_counts()['Native American']
+    cmpd_data_other = cmpd_data['Driver_Race'].value_counts()['Other/Unknown']
 
-with col1:
-    st.write(f'Black: ', cmpd_data_black)
-with col2:
-    st.write(f'White: ', cmpd_data_white)
-with col3:
-    st.write(f'Asian: ', cmpd_data_asian)
-with col4:
-    st.write(f'Native American: ', cmpd_data_native)
-with col5:
-    st.write(f'Other/Unknown: ', cmpd_data_other)
+    col1, col2, col3, col4, col5 = st.columns(5)
 
-cmpd_bar = alt.Chart(cmpd_data).mark_bar().encode(
-    x=alt.X('Driver_Race',axis=alt.Axis(labelAngle=0)).sort('-y'),
-    y='count()',
-    color=alt.Color('Driver_Race')
-).properties(
-    width=600,
-    height=500
-)
-st.altair_chart(cmpd_bar)
+    with col1:
+        st.write(f'Black: ', cmpd_data_black)
+    with col2:
+        st.write(f'White: ', cmpd_data_white)
+    with col3:
+        st.write(f'Asian: ', cmpd_data_asian)
+    with col4:
+        st.write(f'Native American: ', cmpd_data_native)
+    with col5:
+        st.write(f'Other/Unknown: ', cmpd_data_other)
 
-#APD Arrests by Race from 2020
-st.subheader('APD Arrests by Race from 2020')
+    cmpd_bar = alt.Chart(cmpd_data).mark_bar().encode(
+        x=alt.X('Driver_Race',axis=alt.Axis(labelAngle=0)).sort('-y'),
+        y='count()',
+        color=alt.Color('Driver_Race')
+    ).properties(
+        width=600,
+        height=500
+    )
+    st.altair_chart(cmpd_bar)
 
-#Transforming APD data
-apd_data["Standardized Race"]= apd_data["Standardized Race"].str.title()
-apd_data = apd_data[apd_data['Type']=='Arrests']
+with tab2:
+    #APD Arrests by Race from 2020
+    st.subheader('APD Arrests by Race from 2020')
 
-apd_data_black = apd_data['Standardized Race'].value_counts()['Black']
-apd_data_white = apd_data['Standardized Race'].value_counts()['White']
-apd_data_asian = apd_data['Standardized Race'].value_counts()['Asian']
-apd_data_native = apd_data['Standardized Race'].value_counts()['American Indian/Alaskan Native']
+    #Transforming APD data
+    apd_data["Standardized Race"]= apd_data["Standardized Race"].str.title()
+    apd_data = apd_data[apd_data['Type']=='Arrests']
 
-col1, col2, col3, col4 = st.columns(4)
+    apd_data_black = apd_data['Standardized Race'].value_counts()['Black']
+    apd_data_white = apd_data['Standardized Race'].value_counts()['White']
+    apd_data_asian = apd_data['Standardized Race'].value_counts()['Asian']
+    apd_data_native = apd_data['Standardized Race'].value_counts()['American Indian/Alaskan Native']
 
-with col1:
-    st.write(f'Black: ', apd_data_black)
-with col2:
-    st.write(f'White: ', apd_data_white)
-with col3:
-    st.write(f'Asian: ', apd_data_asian)
-with col4:
-    st.write(f'American Indian/Alaskan Native: ', apd_data_native)
+    col1, col2, col3, col4 = st.columns(4)
 
-apd_bar = alt.Chart(apd_data).mark_bar().encode(
-    x=alt.X('Standardized Race',axis=alt.Axis(labelAngle=0)).sort('-y'),
-    y='count()',
-    color=alt.Color('Standardized Race')
-).properties(
-    width=800,
-    height=500
-)
-st.altair_chart(apd_bar)
+    with col1:
+        st.write(f'Black: ', apd_data_black)
+    with col2:
+        st.write(f'White: ', apd_data_white)
+    with col3:
+        st.write(f'Asian: ', apd_data_asian)
+    with col4:
+        st.write(f'American Indian/Alaskan Native: ', apd_data_native)
+
+    apd_bar = alt.Chart(apd_data).mark_bar().encode(
+        x=alt.X('Standardized Race',axis=alt.Axis(labelAngle=0)).sort('-y'),
+        y='count()',
+        color=alt.Color('Standardized Race')
+    ).properties(
+        width=800,
+        height=500
+    )
+    st.altair_chart(apd_bar)
