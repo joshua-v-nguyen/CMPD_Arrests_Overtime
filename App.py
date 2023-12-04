@@ -16,9 +16,9 @@ cmpd_data[['Year', 'Month']] = cmpd_data['Month_of_Stop'].str.split('/', expand=
 #import APD data
 @st.cache_data
 def load_data(apd_data):
-    apd_data = pd.read_csv('Data\APD_Arrests.csv')
-    return apd_data
-apd_data = load_data("<path to csv>")
+    df = pd.read_csv(apd_data)
+    return df
+apd_data = load_data("Data\APD_Arrests.csv")
 
 st.title("Police Traffic Stops")
 
