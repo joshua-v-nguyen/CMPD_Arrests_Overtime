@@ -7,9 +7,9 @@ alt.data_transformers.disable_max_rows()
 #importing CMPD data
 @st.cache_data
 def load_data(cmpd_data):
-    cmpd_data = pd.read_csv('Data\CMPD_Arrests.csv')
-    return cmpd_data
-cmpd_data = load_data("<path to csv>")
+    df = pd.read_csv(cmpd_data)
+    return df
+cmpd_data = load_data("Data\CMPD_Arrests.csv")
 cmpd_data[['Year', 'Month']] = cmpd_data['Month_of_Stop'].str.split('/', expand=True)
 
 
