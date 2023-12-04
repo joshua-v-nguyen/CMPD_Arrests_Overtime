@@ -1,4 +1,1 @@
-altair
-geopandas
-pandas
 streamlit
