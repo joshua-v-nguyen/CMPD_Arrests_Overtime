@@ -9,7 +9,7 @@ alt.data_transformers.disable_max_rows()
 def load_data(cmpd_data):
     df = pd.read_csv(cmpd_data)
     return df
-cmpd_data = load_data("Data\CMPD_Arrests.csv")
+cmpd_data = load_data("CMPD_Arrests.csv")
 cmpd_data[['Year', 'Month']] = cmpd_data['Month_of_Stop'].str.split('/', expand=True)
 
 
@@ -18,7 +18,7 @@ cmpd_data[['Year', 'Month']] = cmpd_data['Month_of_Stop'].str.split('/', expand=
 def load_data(apd_data):
     df = pd.read_csv(apd_data)
     return df
-apd_data = load_data("Data\APD_Arrests.csv")
+apd_data = load_data("APD_Arrests.csv")
 
 st.title("Police Traffic Stops")
 
