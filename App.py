@@ -6,119 +6,53 @@ alt.data_transformers.disable_max_rows()
 
 #importing CMPD data
 @st.cache_data
-def load_data(cmpd_data):
-    df = pd.read_csv(cmpd_data)
+def load_data(seattle):
+    df = pd.read_csv(seattle)
     return df
-cmpd_data = load_data("CMPD_Arrests.csv")
-cmpd_data[['Year', 'Month']] = cmpd_data['Month_of_Stop'].str.split('/', expand=True)
+seattle = load_data("Seattle_Arrests.csv")
+seattle = seattle[seattle['Year']<2023]
+seattle = seattle[seattle['Year']>2019]
+seattle['Subject Perceived Race'].unique()
+seattle = seattle[ (seattle['Subject Perceived Race'] != '-') 
+                  & (seattle['Subject Perceived Race'] != 'Unknown')
+                  & (seattle['Subject Perceived Race'] != 'DUPLICATE')
+                  & (seattle['Subject Perceived Race'] != 'Native Hawaiian or Other Pacific Islander')]
 
 
 #import APD data
 @st.cache_data
-def load_data(apd_data):
-    df = pd.read_csv(apd_data)
+def load_data(fv):
+    df = pd.read_csv(fv)
     return df
-apd_data = load_data("APD_Arrests.csv")
+fv = load_data("Fayettville_Arrests.csv")
+fv = fv[fv['Year']<2023]
+fv = fv[fv['Year']>2019]
 
-st.title("Police Traffic Stops")
+st.title("Police Arrest Data")
 
-# year = " "
-# col1, col2 = st.columns(2,gap='small')
-# with col1:
-#     if st.button('2020', key='button_2020', help='Filter by arrests in 2020'):
-#         cmpd_data = cmpd_data[cmpd_data['Year']=='2020']
-#         year = "2020"
-# with col2:
-#     elif st.button('2021', key='button_2021', help='Filter by arrests in 2021'):
-#         cmpd_data = cmpd_data[cmpd_data['Year']=='2021']
-#         year = "2021"
 
-# button_2020 = st.button('2020', key='button_2020', help='Filter by arrests in 2020')
-# button_2021 = st.button('2021', key='button_2021', help='Filter by arrests in 2021')
+tab1, tab2 = st.tabs(["Seattle, WA", "Fayetteville, NC"])
 
-option = st.selectbox(
-    'Select a year',
-    ('2020','2021')
-)
-
-if (option == '2020'):
-    cmpd_data = cmpd_data[cmpd_data['Year']=='2020']
-elif (option == '2021'):
-    cmpd_data = cmpd_data[cmpd_data['Year']=='2021']
-
-tab1, tab2 = st.tabs(["Charlotte, NC", "Austin, TX"])
-
-#Charlotte, NC Arrest Data
+#Seattle, WA Arrest Data
 with tab1:
-    #CMPD Arrests by Race from 2020 or 2021
-    st.subheader(f'CMPD Arrests by Race in {option}')
-
-    #Filtering only stops that resulted in Arrest
-    cmpd_data = cmpd_data[cmpd_data['Result_of_Stop']=='Arrest']
-    #Filtering only 2020 data
-    # cmpd_data[['Year', 'Month']] = cmpd_data['Month_of_Stop'].str.split('/', expand=True)
-    # cmpd_data = cmpd_data[cmpd_data['Year']=='2020']
-
-    cmpd_data_black = cmpd_data['Driver_Race'].value_counts()['Black']
-    cmpd_data_white = cmpd_data['Driver_Race'].value_counts()['White']
-    cmpd_data_asian = cmpd_data['Driver_Race'].value_counts()['Asian']
-    cmpd_data_native = cmpd_data['Driver_Race'].value_counts()['Native American']
-    cmpd_data_other = cmpd_data['Driver_Race'].value_counts()['Other/Unknown']
-
-    col1, col2, col3, col4, col5 = st.columns(5)
-
-    with col1:
-        st.write(f'Black: {cmpd_data_black}')
-    with col2:
-        st.write(f'White: {cmpd_data_white}')
-    with col3:
-        st.write(f'Asian: {cmpd_data_asian}')
-    with col4:
-        st.write(f'Native American: {cmpd_data_native}')
-    with col5:
-        st.write(f'Other: {cmpd_data_other}')
-
-    cmpd_bar = alt.Chart(cmpd_data).mark_bar().encode(
-        x=alt.X('Driver_Race',axis=alt.Axis(labelAngle=0)).sort('-y'),
-        y='count()',
-        color=alt.Color('Driver_Race')
+    s_chart = alt.Chart(seattle).mark_bar().encode(
+    x= alt.X('Subject Perceived Race:O',title='').sort('-y'),
+    y='count():Q',
+    color='Subject Perceived Race:N',
+    column='Year'
     ).properties(
-        width=600,
-        height=500
+        title='Arrests by Traffic Stops in Seattle, WA'
     )
-    st.altair_chart(cmpd_bar)
+    st.altair_chart(s_chart)
 
-#Austin, TX Arrest Data
+#Fayetteville, NC Arrest Data
 with tab2:
-    #APD Arrests by Race from 2020
-    st.subheader('APD Arrests by Race from 2020')
-
-    #Transforming APD data
-    apd_data["Standardized Race"]= apd_data["Standardized Race"].str.title()
-    apd_data = apd_data[apd_data['Type']=='Arrests']
-
-    apd_data_black = apd_data['Standardized Race'].value_counts()['Black']
-    apd_data_white = apd_data['Standardized Race'].value_counts()['White']
-    apd_data_asian = apd_data['Standardized Race'].value_counts()['Asian']
-    apd_data_native = apd_data['Standardized Race'].value_counts()['American Indian/Alaskan Native']
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        st.write(f'Black: ', apd_data_black)
-    with col2:
-        st.write(f'White: ', apd_data_white)
-    with col3:
-        st.write(f'Asian: ', apd_data_asian)
-    with col4:
-        st.write(f'American Indian/Alaskan Native: ', apd_data_native)
-
-    apd_bar = alt.Chart(apd_data).mark_bar().encode(
-        x=alt.X('Standardized Race',axis=alt.Axis(labelAngle=0)).sort('-y'),
-        y='count()',
-        color=alt.Color('Standardized Race')
+    fv_chart = alt.Chart(fv).mark_bar().encode(
+    x= alt.X('ar_race:O',title='').sort('-y'),
+    y='count():Q',
+    color= alt.Color('ar_race:N').sort('-y'),
+    column= 'Year'
     ).properties(
-        width=800,
-        height=500
+        title='Arrests by Traffic Stops in Fayetteville, NC'
     )
-    st.altair_chart(apd_bar)
+    st.altair_chart(fv_chart)
