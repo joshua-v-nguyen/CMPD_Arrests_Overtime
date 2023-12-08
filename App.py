@@ -53,5 +53,5 @@ with tab2:
     column= 'Year'
     ).properties(
         title='Arrests by Traffic Stops in Fayetteville, NC'
-    )
+    ).configure_title(fontSize=24)
     st.altair_chart(fv_chart)
