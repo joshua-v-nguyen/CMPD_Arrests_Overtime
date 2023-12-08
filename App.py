@@ -36,7 +36,7 @@ tab1, tab2 = st.tabs(["Seattle, WA", "Fayetteville, NC"])
 #Seattle, WA Arrest Data
 with tab1:
     s_chart = alt.Chart(seattle).mark_bar().encode(
-    x= alt.X('Subject Perceived Race:O',center=True,title='Race',axis=alt.Axis(labels=False)).sort('-y'),
+    x= alt.X('Subject Perceived Race:O',title='Race',axis=alt.Axis(labels=False)).sort('-y'),
     y='count():Q',
     color='Subject Perceived Race:N',
     column='Year:T'
