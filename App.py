@@ -41,8 +41,7 @@ with tab1:
     column='Year'
     ).properties(
         title='Arrests by Traffic Stops in Seattle, WA'
-    )
-    s_chart.configure_title(fontSize=24)
+    ).configure_title(fontSize=24)
     st.altair_chart(s_chart)
 
 #Fayetteville, NC Arrest Data
