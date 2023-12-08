@@ -40,7 +40,9 @@ with tab1:
     color= alt.Color('Subject Perceived Race:N').sort('-y'),
     column='Year'
     ).properties(
-        title='Arrests by Traffic Stops in Seattle, WA'
+        title='Arrests by Traffic Stops in Seattle, WA',
+        width=300,
+        height=400
     ).configure_title(fontSize=24)
     st.altair_chart(s_chart)
 
@@ -52,6 +54,8 @@ with tab2:
     color= alt.Color('ar_race:N').sort('-y'),
     column= 'Year'
     ).properties(
-        title='Arrests by Traffic Stops in Fayetteville, NC'
+        title='Arrests by Traffic Stops in Fayetteville, NC',
+        width=300,
+        height=400
     ).configure_title(fontSize=24)
     st.altair_chart(fv_chart)
