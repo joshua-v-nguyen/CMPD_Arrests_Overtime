@@ -42,7 +42,6 @@ with tab1:
     ).properties(
         title='Arrests by Traffic Stops in Seattle, WA'
     )
-    s_chart.mark_bar() + s_chart.mark_text(align='left', dx=2)
     st.altair_chart(s_chart)
 
 #Fayetteville, NC Arrest Data
