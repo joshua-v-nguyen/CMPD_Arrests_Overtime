@@ -38,11 +38,11 @@ with tab1:
     x= alt.X('Subject Perceived Race:O',title='Race',axis=alt.Axis(labels=False)).sort('-y'),
     y='count():Q',
     color='Subject Perceived Race:N',
-    column='Year',
-    text='count():Q'
+    column='Year'
     ).properties(
         title='Arrests by Traffic Stops in Seattle, WA'
     )
+    s_chart.mark_bar() + s_chart.mark_text(align='left', dx=2)
     st.altair_chart(s_chart)
 
 #Fayetteville, NC Arrest Data
