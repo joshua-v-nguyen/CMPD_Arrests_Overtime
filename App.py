@@ -12,7 +12,6 @@ def load_data(seattle):
 seattle = load_data("Seattle_Arrests.csv")
 seattle = seattle[seattle['Year']<2023]
 seattle = seattle[seattle['Year']>2019]
-seattle['Subject Perceived Race'].unique()
 seattle = seattle[ (seattle['Subject Perceived Race'] != '-') 
                   & (seattle['Subject Perceived Race'] != 'Unknown')
                   & (seattle['Subject Perceived Race'] != 'DUPLICATE')
@@ -39,7 +38,7 @@ with tab1:
     x= alt.X('Subject Perceived Race:O',title='Race',axis=alt.Axis(labels=False)).sort('-y'),
     y='count():Q',
     color='Subject Perceived Race:N',
-    column='Year:T'
+    column='Year'
     ).properties(
         title='Arrests by Traffic Stops in Seattle, WA'
     )
