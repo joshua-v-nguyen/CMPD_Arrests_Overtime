@@ -37,7 +37,7 @@ with tab1:
     s_chart = alt.Chart(seattle).mark_bar().encode(
     x= alt.X('Subject Perceived Race:O',title='Race',axis=alt.Axis(labels=False)).sort('-y'),
     y='count():Q',
-    color='Subject Perceived Race:N',
+    color= alt.Color('Subject Perceived Race:N').sort('-y'),
     column='Year'
     ).properties(
         title='Arrests by Traffic Stops in Seattle, WA'
