@@ -4,7 +4,7 @@ import streamlit as st
 
 alt.data_transformers.disable_max_rows()
 
-#importing CMPD data
+#import SPD data
 @st.cache_data
 def load_data(seattle):
     df = pd.read_csv(seattle)
@@ -18,7 +18,7 @@ seattle = seattle[ (seattle['Subject Perceived Race'] != '-')
                   & (seattle['Subject Perceived Race'] != 'Native Hawaiian or Other Pacific Islander')]
 
 
-#import APD data
+#import FPD data
 @st.cache_data
 def load_data(fv):
     df = pd.read_csv(fv)
@@ -29,8 +29,16 @@ fv = fv[fv['Year']>2019]
 
 st.title("Police Arrest Data")
 
+#importing NOPD data
+@st.cache_data
+def load_data(nola):
+    df = pd.read_csv(nola)
+    return df
+nola = load_data("NOPD_Arrests.csv")
+nola = nola[nola['Year']<2023]
+nola = nola[nola['Year']>2019]
 
-tab1, tab2 = st.tabs(["Seattle, WA", "Fayetteville, NC"])
+tab1, tab2, tab3 = st.tabs(["Seattle, WA", "Fayetteville, NC","New Orleans, LA"])
 
 #Seattle, WA Arrest Data
 with tab1:
@@ -59,3 +67,16 @@ with tab2:
         height=400
     ).configure_title(fontSize=24)
     st.altair_chart(fv_chart)
+
+with tab3:
+    nola_chart = alt.Chart(nola).mark_bar().encode(
+    x= alt.X('Offender_Race:O',title='Race').sort('-y'),
+    y='count():Q',
+    color= alt.Color('Offender_Race:N',title='').sort('-y'),
+    column= alt.Column('Year',title='')
+    ).properties(
+        title='Arrests by Traffic Stops in New Orleans, LA',
+        width=125,
+        height=400
+    ).configure_title(fontSize=24)
+    st.altair_chart(nola_chart)
