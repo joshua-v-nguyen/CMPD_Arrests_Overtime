@@ -35,13 +35,13 @@ tab1, tab2 = st.tabs(["Seattle, WA", "Fayetteville, NC"])
 #Seattle, WA Arrest Data
 with tab1:
     s_chart = alt.Chart(seattle).mark_bar().encode(
-    x= alt.X('Subject Perceived Race:O',title='Race',axis=alt.Axis(labels=False)).sort('-y'),
+    x= alt.X('Subject Perceived Race:O',title='').sort('-y'),
     y='count():Q',
     color= alt.Color('Subject Perceived Race:N').sort('-y'),
-    column='Year'
+    column= alt.Column('Year',title='')
     ).properties(
         title='Arrests by Traffic Stops in Seattle, WA',
-        width=300,
+        width=125,
         height=400
     ).configure_title(fontSize=24)
     st.altair_chart(s_chart)
@@ -49,13 +49,13 @@ with tab1:
 #Fayetteville, NC Arrest Data
 with tab2:
     fv_chart = alt.Chart(fv).mark_bar().encode(
-    x= alt.X('ar_race:O',title='Race',axis=alt.Axis(labels=False)).sort('-y'),
+    x= alt.X('ar_race:O',title='Race').sort('-y'),
     y='count():Q',
-    color= alt.Color('ar_race:N').sort('-y'),
-    column= 'Year'
+    color= alt.Color('ar_race:N',title='').sort('-y'),
+    column= alt.Column('Year',title='')
     ).properties(
         title='Arrests by Traffic Stops in Fayetteville, NC',
-        width=300,
+        width=125,
         height=400
     ).configure_title(fontSize=24)
     st.altair_chart(fv_chart)
