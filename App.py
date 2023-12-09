@@ -35,8 +35,8 @@ def load_data(nola):
     df = pd.read_csv(nola)
     return df
 nola = load_data("NOPD_Arrests.csv")
-nola = nola[nola['Year']<2023]
-nola = nola[nola['Year']>2019]
+nola = nola[(nola['Offender_Race'] != '') 
+            & (nola['Offender_Race'] != 'NULL')]
 
 tab1, tab2, tab3 = st.tabs(["Seattle, WA", "Fayetteville, NC","New Orleans, LA"])
 
