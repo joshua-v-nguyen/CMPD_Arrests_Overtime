@@ -69,6 +69,7 @@ nola = load_data("NOPD_Arrests.csv")
 @st.cache_data
 def change_nola(data):
     df = data
+    df = df[df['OffenderStatus']!= ""]
     df = df.replace(
         {'BLACK':'Black',
         'WHITE':'White',
@@ -81,14 +82,15 @@ def change_nola(data):
     return df
 nola = change_nola(nola)
 
-#title
+#TITLE
 st.title("Police Arrest Data")
 
-#select box for year
+#SLIDER TO SELECT YEAR
 year = st.select_slider('Select a year', 
                  options=[2012, 2013, 2014, 2015, 2016, 
                           2017, 2018, 2019, 2020, 2021, 2022])
 
+#SELECTING THE CITY
 city = st.radio(
         "Choose a police department to view arrest data",
         ["FPD","LAPD", "NOPD"],
@@ -106,7 +108,7 @@ if city == "FPD":
                 color= alt.Color('ar_race:N',title='').sort('-y'),
                 column= alt.Column('Year',title='')
                 ).properties(
-                    title='Arrests in Fayetteville, NC (2020-2022)',
+                    title=f'Arrests in Fayetteville, NC ({year})',
                     width=300,
                     height=400
                 ).configure_title(fontSize=24)
@@ -123,7 +125,7 @@ elif city =="LAPD":
                 color= alt.Color('Descent Code:N').sort('-y'),
                 column= alt.Column('Year',title='')
                 ).properties(
-                    title='Arrests in Los Angeles, CA (2020-2022)',
+                    title=f'Arrests in Los Angeles, CA ({year})',
                     width=300,
                     height=400
                 ).configure_title(fontSize=24)
@@ -140,7 +142,7 @@ elif city =="NOPD":
                 color= alt.Color('Offender_Race:N',title='').sort('-y'),
                 column= alt.Column('Year',title='')
                 ).properties(
-                    title='Arrests in New Orleans, LA (2020-2022)',
+                    title=f'Arrests in New Orleans, LA ({year})',
                     width=300,
                     height=400
                 ).configure_title(fontSize=24)
