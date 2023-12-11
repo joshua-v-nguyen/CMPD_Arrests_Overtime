@@ -81,9 +81,11 @@ def change_nola(data):
     return df
 nola = change_nola(nola)
 
+#title
 st.title("Police Arrest Data")
 
-
+#select box for year
+year = st.multiselect('Select a year', [2020, 2021, 2022])
 
 city = st.radio(
         "Choose a police department to view arrest data",
@@ -93,6 +95,7 @@ city = st.radio(
         )
 if city == "FPD":
     #Fayetteville, NC Arrest Data
+    fpd = fpd[fpd['Year'] == year]
     @st.cache_data
     def load_fpd_chart(df):
         chart = alt.Chart(df).mark_bar().encode(
@@ -102,13 +105,14 @@ if city == "FPD":
                 column= alt.Column('Year',title='')
                 ).properties(
                     title='Arrests in Fayetteville, NC (2020-2022)',
-                    width=125,
+                    width=300,
                     height=400
                 ).configure_title(fontSize=24)
         return chart
     st.altair_chart(load_fpd_chart(fpd))
 elif city =="LAPD":
     #Los Angeles, CA Arrest Data
+    lapd = lapd[lapd['Year'] == year]
     @st.cache_data
     def load_lapd_chart(df):
         chart = alt.Chart(df).mark_bar().encode(
@@ -118,13 +122,14 @@ elif city =="LAPD":
                 column= alt.Column('Year',title='')
                 ).properties(
                     title='Arrests in Los Angeles, CA (2020-2022)',
-                    width=125,
+                    width=300,
                     height=400
                 ).configure_title(fontSize=24)
         return chart
     st.altair_chart(load_lapd_chart(lapd))
 elif city =="NOPD":
     #New Orleans, LA Arrest Data
+    nola = nola[nola['Year'] == year]
     @st.cache_data
     def load_nola_chart(df):
         chart = alt.Chart(df).mark_bar().encode(
@@ -134,7 +139,7 @@ elif city =="NOPD":
                 column= alt.Column('Year',title='')
                 ).properties(
                     title='Arrests in New Orleans, LA (2020-2022)',
-                    width=125,
+                    width=300,
                     height=400
                 ).configure_title(fontSize=24)
         return chart
