@@ -15,7 +15,7 @@ lapd = load_data("LAPD_Arrests.csv")
 def change_lapd(data):
     df = data
     df = df[df['Year']<2023]
-    df = df[df['Year']>2019]
+    df = df[df['Year']>2011]
     df = df.replace(
         {'A':'Asian American/Pacific Islander',
         'B':'Black',
@@ -52,7 +52,7 @@ fpd = load_data("Fayettville_Arrests.csv")
 def change_fpd(data):
     df = data
     df = df[df['Year']<2023]
-    df = df[df['Year']>2019]
+    df = df[df['Year']>2011]
     df = df.replace(
         {'A':'Asian American/Pacific Islander',
         'B':'Black',
@@ -85,7 +85,9 @@ nola = change_nola(nola)
 st.title("Police Arrest Data")
 
 #select box for year
-year = st.multiselect('Select a year', [2020, 2021, 2022])
+year = st.select_slider('Select a year', 
+                 options=[2012, 2013, 2014, 2015, 2016, 
+                          2017, 2018, 2019, 2020, 2021, 2022])
 
 city = st.radio(
         "Choose a police department to view arrest data",
