@@ -53,19 +53,22 @@ def change_fpd(data):
     df = data
     df = df[df['Year']<2023]
     df = df[df['Year']>2011]
+    df['ar_race'] = df['ar_race'].apply(lambda x: x.strip())
     df = df.replace(
         {'A':'Asian American/Pacific Islander',
         'B':'Black',
         'I':'Native American/Indigenous',
         'U':'Unknown',
-        'W':'White'
+        'W':'White',
+        'H':'Hispanic/Latin/Mexican',
+        'O':'Unknown'
         })
     return df
 fpd = change_fpd(fpd)
 
 #importing NOPD data
 nola = load_data("NOPD_Arrests.csv")
-#Editing FPD data
+#Editing NOPD data
 @st.cache_data
 def change_nola(data):
     df = data
