@@ -84,27 +84,15 @@ nola = change_nola(nola)
 st.title("Police Arrest Data")
 
 
-tab1, tab2, tab3 = st.tabs(["Los Angeles, CA", "Fayetteville, NC","New Orleans, LA"])
 
-#Los Angeles, CA Arrest Data
-with tab1:
-    @st.cache_data
-    def load_lapd_chart(df):
-        chart = alt.Chart(df).mark_bar().encode(
-                x= alt.X('Descent Code:O',title='').sort('-y'),
-                y='count():Q',
-                color= alt.Color('Descent Code:N').sort('-y'),
-                column= alt.Column('Year',title='')
-                ).properties(
-                    title='Arrests in Los Angeles, CA (2020-2022)',
-                    width=125,
-                    height=400
-                ).configure_title(fontSize=24)
-        return chart
-    st.altair_chart(load_lapd_chart(lapd))
-
-#Fayetteville, NC Arrest Data
-with tab2:
+city = st.radio(
+        "Choose a police department to view arrest data",
+        ["FPD","LAPD", "NOPD"],
+        captions=["Fayettville, NC", "Los Angeles, CA", "New Orleans, LA"],
+        horizontal=True
+        )
+if city == "FPD":
+    #Fayetteville, NC Arrest Data
     @st.cache_data
     def load_fpd_chart(df):
         chart = alt.Chart(df).mark_bar().encode(
@@ -119,8 +107,24 @@ with tab2:
                 ).configure_title(fontSize=24)
         return chart
     st.altair_chart(load_fpd_chart(fpd))
-
-with tab3:
+elif city =="LAPD":
+    #Los Angeles, CA Arrest Data
+    @st.cache_data
+    def load_lapd_chart(df):
+        chart = alt.Chart(df).mark_bar().encode(
+                x= alt.X('Descent Code:O',title='').sort('-y'),
+                y='count():Q',
+                color= alt.Color('Descent Code:N').sort('-y'),
+                column= alt.Column('Year',title='')
+                ).properties(
+                    title='Arrests in Los Angeles, CA (2020-2022)',
+                    width=125,
+                    height=400
+                ).configure_title(fontSize=24)
+        return chart
+    st.altair_chart(load_lapd_chart(lapd))
+elif city =="NOPD":
+    #New Orleans, LA Arrest Data
     @st.cache_data
     def load_nola_chart(df):
         chart = alt.Chart(df).mark_bar().encode(
