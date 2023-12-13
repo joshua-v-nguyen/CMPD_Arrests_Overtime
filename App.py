@@ -4,6 +4,8 @@ import streamlit as st
 
 alt.data_transformers.disable_max_rows()
 
+#==============IMPPRTING DATA==============#
+
 #import LAPD data
 @st.cache_data
 def load_data(csv):
@@ -15,7 +17,7 @@ lapd = load_data("LAPD_Arrests.csv")
 def change_lapd(data):
     df = data
     df = df[df['Year']<2023]
-    df = df[df['Year']>2011]
+    df = df[df['Year']>2019]
     df = df.replace(
         {'A':'Asian American/Pacific Islander',
         'B':'Black',
@@ -52,7 +54,7 @@ fpd = load_data("Fayettville_Arrests.csv")
 def change_fpd(data):
     df = data
     df = df[df['Year']<2023]
-    df = df[df['Year']>2011]
+    df = df[df['Year']>2019]
     df['ar_race'] = df['ar_race'].apply(lambda x: x.strip())
     df = df.replace(
         {'A':'Asian American/Pacific Islander',
@@ -61,7 +63,9 @@ def change_fpd(data):
         'U':'Unknown',
         'W':'White',
         'H':'Hispanic/Latin/Mexican',
-        'O':'Unknown'
+        'O':'Unknown',
+        'F':'Unknown',
+        'P':'Unknown'
         })
     return df
 fpd = change_fpd(fpd)
@@ -73,6 +77,8 @@ nola = load_data("NOPD_Arrests.csv")
 def change_nola(data):
     df = data
     df = df[df['OffenderStatus']!= ""]
+    df = df[df['Year']>2019]
+    df = df[df['Year']<2023]
     df = df.replace(
         {'BLACK':'Black',
         'WHITE':'White',
@@ -88,10 +94,8 @@ nola = change_nola(nola)
 #TITLE
 st.title("Police Arrest Data")
 
-#SLIDER TO SELECT YEAR
-year = st.select_slider('Select a year', 
-                 options=[2012, 2013, 2014, 2015, 2016, 
-                          2017, 2018, 2019, 2020, 2021, 2022])
+
+#==============GRAPHS==============#
 
 #SELECTING THE CITY
 city = st.radio(
@@ -102,7 +106,6 @@ city = st.radio(
         )
 if city == "FPD":
     #Fayetteville, NC Arrest Data
-    fpd = fpd[fpd['Year'] == year]
     @st.cache_data
     def load_fpd_chart(df):
         chart = alt.Chart(df).mark_bar().encode(
@@ -111,15 +114,14 @@ if city == "FPD":
                 color= alt.Color('ar_race:N',title='').sort('-y'),
                 column= alt.Column('Year',title='')
                 ).properties(
-                    title=f'Arrests in Fayetteville, NC ({year})',
-                    width=300,
-                    height=400
+                    title='Arrests in Fayetteville, NC (2018-2022)',
+                    width=125,
+                    height=200
                 ).configure_title(fontSize=24)
         return chart
     st.altair_chart(load_fpd_chart(fpd))
 elif city =="LAPD":
     #Los Angeles, CA Arrest Data
-    lapd = lapd[lapd['Year'] == year]
     @st.cache_data
     def load_lapd_chart(df):
         chart = alt.Chart(df).mark_bar().encode(
@@ -128,15 +130,14 @@ elif city =="LAPD":
                 color= alt.Color('Descent Code:N').sort('-y'),
                 column= alt.Column('Year',title='')
                 ).properties(
-                    title=f'Arrests in Los Angeles, CA ({year})',
-                    width=300,
-                    height=400
+                    title='Arrests in Los Angeles, CA (2020-2022)',
+                    width=125,
+                    height=200
                 ).configure_title(fontSize=24)
         return chart
     st.altair_chart(load_lapd_chart(lapd))
 elif city =="NOPD":
     #New Orleans, LA Arrest Data
-    nola = nola[nola['Year'] == year]
     @st.cache_data
     def load_nola_chart(df):
         chart = alt.Chart(df).mark_bar().encode(
@@ -145,9 +146,30 @@ elif city =="NOPD":
                 color= alt.Color('Offender_Race:N',title='').sort('-y'),
                 column= alt.Column('Year',title='')
                 ).properties(
-                    title=f'Arrests in New Orleans, LA ({year})',
-                    width=300,
-                    height=400
+                    title='Arrests in New Orleans, LA (2020-2022)',
+                    width=125,
+                    height=200
                 ).configure_title(fontSize=24)
         return chart
     st.altair_chart(load_nola_chart(nola))
+
+
+#==============SIDEBAR==============#
+with st.sidebar:
+    if city == "FPD":
+        st.title(f"Comparisons with {city} Demographics")
+        display = fpd['ar_race'].unique()
+        options = list(range(len(display)))
+        value = st.selectbox("Please select a racial identity to compare:", options, format_func=lambda x: display[x])
+    elif city =="LAPD":
+        st.title(f"Comparisons with {city} Demographics")
+        display = lapd['Descent Code'].unique()
+        options = list(range(len(display)))
+        value = st.selectbox("Please select a racial identity to compare:", options, format_func=lambda x: display[x])
+    elif city == "NOPD":
+        st.title(f"Comparisons with {city} Demographics")
+        display = nola['Offender_Race'].unique()
+        options = list(range(len(display)))
+        value = st.selectbox("Please select a racial identity to compare:", options, format_func=lambda x: display[x])
+
+    st.selectbox("Select a year:",(2020,2021,2022))
