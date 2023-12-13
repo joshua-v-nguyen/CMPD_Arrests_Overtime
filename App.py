@@ -39,6 +39,8 @@ def change_lapd(data):
         'X':'Unknown',
         'Z':'Asian American/Pacific Islander'
         })
+    df = df[df['Descent Code']!='Unknown']
+    df = df[df['Descent Code']!='Other']
     return df
 lapd = change_lapd(lapd)
 
@@ -67,6 +69,7 @@ def change_fpd(data):
         'F':'Unknown',
         'P':'Unknown'
         })
+    df = df[df['ar_race']!='Unknown']
     return df
 fpd = change_fpd(fpd)
 
@@ -84,92 +87,177 @@ def change_nola(data):
         'WHITE':'White',
         'HISPANIC':'Hispanic/Latin/Mexican',
         'ASIAN':'Asian American/Pacific Islander',
-        'NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER':'AAPI',
+        'NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER':'Asian American/Pacific Islander',
         'AMER. IND.':'Native American/Indigenous',
         'WHITE':'White'
         }) 
     return df
 nola = change_nola(nola)
 
+@st.cache_data
+def load_demo(data):
+    df = pd.read_csv(data)
+    return df
+
 #TITLE
 st.title("Police Arrest Data")
 
-
-#==============GRAPHS==============#
-
 #SELECTING THE CITY
 city = st.radio(
-        "Choose a police department to view arrest data",
-        ["FPD","LAPD", "NOPD"],
-        captions=["Fayettville, NC", "Los Angeles, CA", "New Orleans, LA"],
-        horizontal=True
-        )
-if city == "FPD":
-    #Fayetteville, NC Arrest Data
-    @st.cache_data
-    def load_fpd_chart(df):
-        chart = alt.Chart(df).mark_bar().encode(
-                x= alt.X('ar_race:O',title='Race').sort('-y'),
-                y='count():Q',
-                color= alt.Color('ar_race:N',title='').sort('-y'),
-                column= alt.Column('Year',title='')
-                ).properties(
-                    title='Arrests in Fayetteville, NC (2018-2022)',
-                    width=125,
-                    height=200
-                ).configure_title(fontSize=24)
-        return chart
-    st.altair_chart(load_fpd_chart(fpd))
-elif city =="LAPD":
-    #Los Angeles, CA Arrest Data
-    @st.cache_data
-    def load_lapd_chart(df):
-        chart = alt.Chart(df).mark_bar().encode(
-                x= alt.X('Descent Code:O',title='').sort('-y'),
-                y='count():Q',
-                color= alt.Color('Descent Code:N').sort('-y'),
-                column= alt.Column('Year',title='')
-                ).properties(
-                    title='Arrests in Los Angeles, CA (2020-2022)',
-                    width=125,
-                    height=200
-                ).configure_title(fontSize=24)
-        return chart
-    st.altair_chart(load_lapd_chart(lapd))
-elif city =="NOPD":
-    #New Orleans, LA Arrest Data
-    @st.cache_data
-    def load_nola_chart(df):
-        chart = alt.Chart(df).mark_bar().encode(
-                x= alt.X('Offender_Race:O',title='Race').sort('-y'),
-                y='count():Q',
-                color= alt.Color('Offender_Race:N',title='').sort('-y'),
-                column= alt.Column('Year',title='')
-                ).properties(
-                    title='Arrests in New Orleans, LA (2020-2022)',
-                    width=125,
-                    height=200
-                ).configure_title(fontSize=24)
-        return chart
-    st.altair_chart(load_nola_chart(nola))
+            "Choose a police department to view arrest data",
+            ["FPD","LAPD", "NOPD"],
+            captions=["Fayettville, NC", "Los Angeles, CA", "New Orleans, LA"],
+            horizontal=True
+            )
+slider = st.slider('Select a year', 2020, 2022, 2020)
 
+@st.cache_data
+def year_select(df,year_slider):
+    df = df[df['Year']==year_slider]
+    return df
 
-#==============SIDEBAR==============#
-with st.sidebar:
+tab1, tab2 = st.tabs(["Arrest Graphs", "Comparative Statistics"])
+
+#==============GRAPH TAB==============#
+with tab1:
     if city == "FPD":
-        st.title(f"Comparisons with {city} Demographics")
-        display = fpd['ar_race'].unique()
-        options = list(range(len(display)))
-        value = st.selectbox("Please select a racial identity to compare:", options, format_func=lambda x: display[x])
+        #Fayetteville, NC Arrest Data
+        fpd = year_select(fpd,slider)
+        @st.cache_data
+        def load_fpd_chart(df):
+            chart = alt.Chart(df).mark_bar().encode(
+                    x= alt.X('count():Q',title=''),
+                    y=alt.Y('ar_race:O',title='').sort('-x'),
+                    color= alt.Color('ar_race:N',legend=None).sort('-x'),
+                    text='count():Q'
+                    ).properties(
+                        title='Arrests in Fayetteville, NC (2020-2022)',
+                        width=500,
+                        height=400
+                    )
+            return chart
+        st.altair_chart(load_fpd_chart(fpd).mark_bar() + load_fpd_chart(fpd).mark_text(align='left', dx=2))
     elif city =="LAPD":
-        st.title(f"Comparisons with {city} Demographics")
-        display = lapd['Descent Code'].unique()
-        options = list(range(len(display)))
-        value = st.selectbox("Please select a racial identity to compare:", options, format_func=lambda x: display[x])
-    elif city == "NOPD":
-        st.title(f"Comparisons with {city} Demographics")
-        display = nola['Offender_Race'].unique()
-        options = list(range(len(display)))
-        value = st.selectbox("Please select a racial identity to compare:", options, format_func=lambda x: display[x])
+        #Los Angeles, CA Arrest Data
+        lapd = year_select(lapd,slider)
+        @st.cache_data
+        def load_lapd_chart(df):
+            chart = alt.Chart(df).mark_bar().encode(
+                    x= alt.X('count():Q',title=''),
+                    y=alt.Y('Descent Code:O',title='').sort('-x'),
+                    color= alt.Color('Descent Code:N',legend=None).sort('-x'),
+                    text='count():Q'
+                    ).properties(
+                        title='Arrests in Los Angeles, CA (2020-2022)',
+                        width=600,
+                        height=400
+                    )
+            return chart
+        st.altair_chart(load_lapd_chart(lapd).mark_bar() + load_lapd_chart(lapd).mark_text(align='left', dx=2))
+    elif city =="NOPD":
+        #New Orleans, LA Arrest Data
+        nola = year_select(nola,slider)
+        @st.cache_data
+        def load_nola_chart(df):
+            chart = alt.Chart(df).mark_bar().encode(
+                    x= alt.X('count():Q',title=''),
+                    y=alt.Y('Offender_Race:O',title='').sort('-x'),
+                    color= alt.Color('Offender_Race:N',legend=None).sort('-x'),
+                    text='count():Q'
+                    ).properties(
+                        title='Arrests in New Orleans, LA (2020-2022)',
+                        width=600,
+                        height=400
+                    )
+            return chart
+        st.altair_chart(load_nola_chart(nola).mark_bar() + load_nola_chart(nola).mark_text(align='left', dx=2))
 
-    st.selectbox("Select a year:",(2020,2021,2022))
+#==============STATISTICS TAB==============#
+with tab2:    
+    st.write(f"**Comparisons with :red[{city}] Demographics**")
+    if city == "FPD":
+        display = fpd['ar_race'].unique()
+    elif city =="LAPD":
+        display = lapd['Descent Code'].unique()
+    elif city == "NOPD":
+        display = nola['Offender_Race'].unique()
+    
+    options = list(range(len(display)))
+    value = st.selectbox("Please select a racial identity to compare:", options, format_func=lambda x: display[x])
+
+    #LOADING DEMOGRAPHIC DATA
+    demo = load_demo("Demographics.csv")
+
+    #FPD
+    if value == 0 and city == "FPD":
+        race="White"
+    elif value == 1 and city == "FPD":
+        race="Black"
+    elif value == 2 and city == "FPD":
+        race="Native American/Indigenous"
+    elif value == 3 and city == "FPD":
+        race="Asian American/Pacific Islander"
+    #LAPD
+    elif value == 0 and city == "LAPD":
+        race="Hispanic/Latin/Mexican"
+    elif value == 1 and city == "LAPD":
+        race="Black"
+    elif value == 2 and city == "LAPD":
+        race="White"
+    elif value == 3 and city == "LAPD":
+        race="Asian American/Pacific Islander"
+    elif value == 4 and city == "LAPD":
+        race="Native American/Indigenous"
+    #NOPD
+    elif value == 0 and city == "NOPD":
+        race="Black"
+    elif value == 1 and city == "NOPD":
+        race="White"
+    elif value == 2 and city == "NOPD":
+        race="Hispanic/Latin/Mexican"
+    elif value == 3 and city == "NOPD":
+        race="Asian American/Pacific Islander"
+    elif value == 4 and city == "NOPD":
+        race="Native American/Indigenous"
+
+    #==========STATISTICS==========#
+    filtered_df = demo[demo["City"].isin([f"{city}"]) & demo["Race"].isin([race])]
+    population = filtered_df['Count'].sum()
+
+    #POPULATION NUMBERS
+    totpop = 0
+    if city=='FPD':
+        cityname = 'Fayetteville\'s'
+        totpop = 208501
+        fpd = fpd[fpd['ar_race']==race]
+        race_arrest = fpd['ar_race'].count()
+    elif city=='LAPD':
+        cityname = 'Los Angeles\''
+        totpop = 3898747
+        lapd = lapd[lapd['Descent Code']==race]
+        race_arrest = lapd['Descent Code'].count()
+    elif city=='NOPD':
+        cityname = 'New Orlean\'s'
+        totpop = 383997
+        nola = nola[nola['Offender_Race']==race]
+        race_arrest = nola['Offender_Race'].count()
+
+    source_data = [[totpop,'Total Population'],[population,f'{race} Population'],[race_arrest,'# Arrested']]
+    source = pd.DataFrame(source_data, columns=['y','x'])
+    source['y'] = source['y'].astype(float)
+
+
+    chart = alt.Chart(source).mark_bar().encode(
+            x=alt.X('y',title=""),
+            y=alt.Y('x',title="").sort('-x'),
+            color = alt.Color('x',legend=None,
+                                scale=alt.Scale(
+                                domain=source.sort_values(['y'])['x'].tolist(),
+                                range=['#1d4289','orange','grey'])),
+            text='y'
+        ).properties(
+            title='Population Comparisons',
+            width=500,
+            height=400
+        )
+    st.altair_chart(chart.mark_bar() + chart.mark_text(align='left', dx=2))
