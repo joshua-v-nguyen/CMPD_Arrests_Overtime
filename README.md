@@ -21,6 +21,6 @@ To view the app, you can click [here](https://disproportionatearrests2020-2022.s
 
 **OTHER SOURCES**
 
-- [The Impact of Early Racial Discrimination on Illegal Behavior, Arrest and Incarceration among African Americans](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7162705/) :gray[*by Am Psychol*]
-- [Beyond the count: A deep dive into state prison populations](https://www.prisonpolicy.org/reports/beyondthecount.html#demographics) :gray[*by Leah Wang, Wendy Sawyer, Tiana Herring, and Emily Widra*]
-- [Where Incarceration Isn’t the Answer](https://www.yesmagazine.org/issue/what-the-rest-of-the-world-knows/2020/11/03/where-incarceration-isnt-the-answer) :gray[*by Mark P. Fancher*]
+- [The Impact of Early Racial Discrimination on Illegal Behavior, Arrest and Incarceration among African Americans](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7162705/) *by Am Psychol*
+- [Beyond the count: A deep dive into state prison populations](https://www.prisonpolicy.org/reports/beyondthecount.html#demographics) *by Leah Wang, Wendy Sawyer, Tiana Herring, and Emily Widra*
+- [Where Incarceration Isn’t the Answer](https://www.yesmagazine.org/issue/what-the-rest-of-the-world-knows/2020/11/03/where-incarceration-isnt-the-answer) *by Mark P. Fancher*
