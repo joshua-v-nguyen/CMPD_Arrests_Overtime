@@ -10,17 +10,17 @@ To view the app, you can click [here](https://disproportionatearrests2020-2022.s
 
 ## Data Sources
 
-**ARREST DATA**
+**Arrest Data**
 
 - [Fayettville Police Department](https://data.fayettevillenc.gov/datasets/faync::arrests/about)
 - [Los Angeles Police Department](https://data.lacity.org/Public-Safety/Arrest-Data-from-2020-to-Present/amvf-fr72/about_data)
 
-**OTHER STATISTICS**
+**Other Statistics**
 
 - [Prisoner Statistics (2020)](https://bjs.ojp.gov/library/publications/prisoners-2020-statistical-tables)
 
 
-## Other Sources
+## Literary Sources
 
 - [The Impact of Early Racial Discrimination on Illegal Behavior, Arrest and Incarceration among African Americans](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7162705/) *by Am Psychol*
 - [Beyond the count: A deep dive into state prison populations](https://www.prisonpolicy.org/reports/beyondthecount.html#demographics) *by Leah Wang, Wendy Sawyer, Tiana Herring, and Emily Widra*
