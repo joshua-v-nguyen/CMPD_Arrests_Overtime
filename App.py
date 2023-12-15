@@ -86,20 +86,11 @@ st.markdown('''
             ''')
 
 with st.sidebar:
-        st.title("FILTERS:")
-        #SELECTING THE CITY
-        city = st.radio(
-                    "Choose a police department to view arrest data",
-                    ["FPD","LAPD"],
-                    captions=["Fayettville, NC", "Los Angeles, CA"],horizontal=True)
-        #SELECTING THE YEAR
-        slider = st.radio('Select a year', [2020, 2021, 2022],horizontal=True)
-        st.write("------------------------------------")
         st.title("ABBREVIATIONS:")
         st.subheader("Police Departments")
         st.write(":red[FPD] = Fayetteville Police Department")
         st.write(":red[LAPD] = Los Angeles Police Department")
-        st.subheader("RACIAL IDENTITIES:")
+        st.subheader("Racial Identities:")
         st.write(":red[AA/PI] = Asian American/Pacific Islander")
         st.write(":red[H/L/M] = Hispanic/Latinx/Mexican")
 
@@ -131,7 +122,18 @@ with tab1:
     
 
 #==============ARREST TAB==============#
-with tab2:    
+with tab2:
+    col1, col2 = st.columns(2)
+    with col1:
+        #SELECTING THE CITY
+        city = st.radio(
+                    "Choose a police department to view arrest data",
+                    ["FPD","LAPD"],
+                    captions=["Fayettville, NC", "Los Angeles, CA"],horizontal=True)
+    with col2:
+        #SELECTING THE YEAR
+        slider = st.radio('Select a year', [2020, 2021, 2022],horizontal=True)  
+
     st.write(f"**Arrests in :red[{city}] in :red[{slider}]**")
 
     #LOADING DEMOGRAPHIC DATA
