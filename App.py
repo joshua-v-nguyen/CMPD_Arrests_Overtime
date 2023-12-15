@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 
 alt.data_transformers.disable_max_rows()
-alt.themes.enable('default')
+alt.themes.enable('opaque')
 
 #==============IMPORTING DATA==============#
 
