@@ -11,7 +11,7 @@ alt.data_transformers.disable_max_rows()
 def load_data(csv):
     df = pd.read_csv(csv)
     return df
-lapd = load_data("LAPD_Arrests.csv")
+lapd = load_data("App\LAPD_Arrests.csv")
 #Editing LAPD data
 @st.cache_data
 def change_lapd(data):
@@ -51,7 +51,7 @@ lapd = change_lapd(lapd)
 def load_data(csv):
     df = pd.read_csv(csv)
     return df
-fpd = load_data("Fayettville_Arrests.csv")
+fpd = load_data("App\Fayettville_Arrests.csv")
 #Editing FPD data
 @st.cache_data
 def change_fpd(data):
@@ -118,7 +118,7 @@ with tab1:
         ###### :gray[Here, I compare two cities; :red[Fayetteville, NC] and :red[Los Angeles, CA] across a 3 year period :red[(2020-2022)]. To the left includes some filters to switch between cities and year, as well as an abbreviations glossary.]
         ''')
     
-    st.image('./background.png')
+    st.image('./App\background.png')
     st.markdown('''
         :gray[*sourced from Prisoners in 2020 – Statistical Tables, NCJ 302776, December 2021. https://bjs.ojp.gov/library/publications/prisoners-2020-statistical-tables.*]
 
@@ -135,7 +135,7 @@ with tab2:
     st.write(f"**Arrests in :red[{city}] in :red[{slider}]**")
 
     #LOADING DEMOGRAPHIC DATA
-    demo = load_demo("Demographics.csv")
+    demo = load_demo("App\Demographics.csv")
 
     #==========STATISTICS==========#
 
@@ -229,7 +229,7 @@ with tab3:
 
                 ''')
     
-    st.image('./incarceration.png')
+    st.image('./App\incarceration.png')
     st.markdown('''
         :gray[*Image courtesy of "Where Incarceration Isn’t the Answer" from [YesMagazine](https://www.yesmagazine.org/issue/what-the-rest-of-the-world-knows/2020/11/03/where-incarceration-isnt-the-answer).*]
 
