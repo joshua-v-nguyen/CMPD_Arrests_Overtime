@@ -107,7 +107,7 @@ with tab1:
     st.markdown('''
         ###### :gray[This app was made to highlight the disproportionate arrests made on Black and Brown individuals by the police.] 
                 
-        ###### :gray[Here, I compare two cities; :red[Fayetteville, NC] and :red[Los Angeles, CA] across a 3 year period :red[(2020-2022)]. To the left includes some filters to switch between cities and year, as well as an abbreviations glossary.]
+        ###### :gray[Here, I compare two cities; :red[Fayetteville, NC] and :red[Los Angeles, CA] across a 3 year period :red[(2020-2022)]. To the left includes an abbreviations glossary.]
         ''')
     
     st.image('./background.png')
